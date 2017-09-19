@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.io.*;
 
 public class Cipher {
-	private static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.() '\"![]/%-_;?-=:\n";
+	public static final String ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789,.() '\"![]/%-_;?-=:\n";
 	private static final String SIMPLE_ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ";
 
 	// Set this variable to the default alphabet you wish to use
@@ -23,17 +23,15 @@ public class Cipher {
 	 * @return returns the encrypted plainText.
 	 */
 	public static String rotationCipherEncrypt(String plainText, int shiftAmount, String alphabet) {
-		String output = "";
+		String cipherText = "";
 
-		for (int i = 0; i < plainText.length(); i++) {
-			String a = alphabet.substring(i);
-			int ind = alphabet.indexOf(a);
-			ind = ind + shiftAmount;
-			String result = alphabet.substring(ind);
-			output = result;
+		for (int  i = 0; i < plainText.length(); i++) {
+			String letter = plainText.substring(i, i + 1);
+			int loc = Math.abs(alphabet.indexOf(letter) + shiftAmount) % alphabet.length();
+			letter = alphabet.substring(loc, loc + 1);
+			cipherText = cipherText + letter;
 		}
-
-		return output;
+		return cipherText;
 	}
 
 	public static String rotationCipherEncrypt(String plainText, int shiftAmount) {
@@ -53,7 +51,15 @@ public class Cipher {
 	 * @return returns the decrypted cipherText.
 	 */
 	public static String rotationCipherDecrypt(String cipherText, int shiftAmount, String alphabet) {
-		return "";
+		String plainText = "";
+		int loc;
+		for (int i = 0; i < cipherText.length(); i++) {
+			String letter = cipherText.substring(i, i + 1);
+			loc = Math.abs(alphabet.indexOf(letter) - shiftAmount) % alphabet.length();
+			letter = alphabet.substring(loc, loc + 1);
+			plainText = plainText + letter;
+		}
+		return plainText;
 	}
 
 	public static String rotationCipherDecrypt(String cipherText, int shiftAmount) {
